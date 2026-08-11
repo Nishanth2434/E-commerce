@@ -100,3 +100,56 @@ input:focus, select:focus, textarea:focus {
 .table td {
     vertical-align: middle;
 }
+
+/* Amazon-style Admin Login Page */
+body.login-page {
+    background-color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.login-page .login-box {
+    width: 350px !important;
+    margin: 0 auto;
+}
+.login-page .login-logo {
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+.login-page .login-logo a {
+    color: #111 !important;
+    font-family: 'Amazon Ember', 'Inter', sans-serif !important;
+    font-weight: bold;
+}
+.login-page .card {
+    border: 1px solid #ddd;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important;
+}
+.login-page .card-body {
+    padding: 25px 30px !important;
+}
+.login-page .btn-primary {
+    background-color: #ffd814 !important;
+    border-color: #fcd200 !important;
+    color: #111 !important;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(15,17,17,.15);
+}
+.login-page .btn-primary:hover {
+    background-color: #f7ca00 !important;
+}
+.login-page .login-box-msg {
+    padding: 0 0 15px 0 !important;
+    font-weight: 500;
+    color: #0f1111;
+    text-align: left;
+    font-size: 22px;
+}
+.login-page .input-group {
+    margin-bottom: 15px !important;
+}

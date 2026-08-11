@@ -1,16 +1,24 @@
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem
 from products.models import Product
 
-@login_required
+def _get_or_create_cart(request):
+    if request.user.is_authenticated:
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        return cart
+    
+    if not request.session.session_key:
+        request.session.create()
+    session_key = request.session.session_key
+    cart, _ = Cart.objects.get_or_create(session_id=session_key, user=None)
+    return cart
+
 def cart_detail(request):
-    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart = _get_or_create_cart(request)
     return render(request, 'cart/cart_detail.html', {'cart': cart})
 
-@login_required
 def add_to_cart(request):
     if request.method == 'POST':
         try:
@@ -19,7 +27,7 @@ def add_to_cart(request):
             quantity = int(data.get('quantity', 1))
             
             product = get_object_or_404(Product, id=product_id)
-            cart, _ = Cart.objects.get_or_create(user=request.user)
+            cart = _get_or_create_cart(request)
             
             cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
             if not created:
@@ -34,7 +42,6 @@ def add_to_cart(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
-@login_required
 def update_cart(request):
     if request.method == 'POST':
         try:
@@ -42,7 +49,8 @@ def update_cart(request):
             item_id = data.get('item_id')
             action = data.get('action')
             
-            cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+            cart = _get_or_create_cart(request)
+            cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
             
             if action == 'increase':
                 cart_item.quantity += 1
@@ -66,14 +74,13 @@ def update_cart(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error'}, status=400)
 
-@login_required
 def remove_from_cart(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             item_id = data.get('item_id')
-            cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
-            cart = cart_item.cart
+            cart = _get_or_create_cart(request)
+            cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
             cart_item.delete()
             
             cart_count = sum(item.quantity for item in cart.items.all())

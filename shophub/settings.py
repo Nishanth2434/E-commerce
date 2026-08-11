@@ -144,7 +144,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "ShopHub Admin",
     "site_header": "ShopHub",
     "site_brand": "ShopHub",
-    "welcome_sign": "Welcome to ShopHub Administration",
+    "welcome_sign": "Sign in",
     "copyright": "ShopHub E-Commerce",
     "search_model": ["products.Product", "auth.User"],
     "show_sidebar": True,
