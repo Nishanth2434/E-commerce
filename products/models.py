@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    image = models.URLField(blank=True, null=True)
+    image = models.URLField(max_length=1000, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -20,7 +20,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     stock_quantity = models.PositiveIntegerField(default=0)
-    image = models.URLField(blank=True, null=True)
+    image = models.URLField(max_length=1000, blank=True, null=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
     num_reviews = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
