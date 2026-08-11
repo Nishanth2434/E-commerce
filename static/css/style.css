@@ -830,14 +830,31 @@ ul {
 
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
     .header-top {
         flex-wrap: wrap;
         padding: 10px;
+        gap: 10px;
+    }
+    .header-actions {
+        gap: 5px;
+    }
+    .logo {
+        font-size: 18px;
+    }
+    .nav-link {
+        font-size: 12px;
+        padding: 2px;
+    }
+    .hide-mobile, .location-badge {
+        display: none !important;
     }
     .search-form {
         order: 3;
         min-width: 100%;
-        margin-top: 10px;
+        margin-top: 5px;
     }
     .hero-content {
         flex-direction: column;
