@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Gift Registry | ShopHub{% endblock %}
+{% block content %}
+<div class="main-content auth-page" style="align-items: flex-start; max-width:1000px; margin:0 auto; display:flex; flex-direction:row; gap:40px; padding-top:40px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:300px;">
+        <h2 style="font-size:32px; margin-bottom:20px;">Gift Registry</h2>
+        <p style="font-size:18px; color:var(--text-light); margin-bottom:30px;">Create a wishlist for any occasion. Share it with friends and family to get the gifts you truly want.</p>
+        
+        {% if user.is_authenticated %}
+            <div class="auth-box" style="margin:0;">
+                <h2>Create Your Registry</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Registry Name</label>
+                        <input type="text" name="name" placeholder="e.g. John & Jane's Wedding" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Type</label>
+                        <select name="event_type" style="width:100%; padding:8px; border:1px solid #a6a6a6; border-radius:3px;">
+                            <option value="Wedding">Wedding</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Baby">Baby</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Registry</button>
+                </form>
+            </div>
+        {% else %}
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary">Sign in to Create a Registry</a>
+        {% endif %}
+    </div>
+    
+    {% if user.is_authenticated and registries %}
+    <div style="flex:1; min-width:300px;">
+        <h3>Your Registries</h3>
+        <br>
+        {% for reg in registries %}
+            <div style="border:1px solid var(--border-color); border-radius:8px; padding:15px; margin-bottom:15px; background:white;">
+                <h4><a href="{% url 'products:registry_detail' reg.id %}">{{ reg.name }}</a></h4>
+                <p style="color:var(--text-light); font-size:13px;">{{ reg.event_type }} - Created {{ reg.created_at|date }}</p>
+                <a href="{% url 'products:registry_detail' reg.id %}" class="link-btn" style="font-size:13px; margin-top:10px; display:inline-block;">View Items &rarr;</a>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

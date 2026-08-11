@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Today's Deals | ShopHub{% endblock %}
+{% block content %}
+<div class="main-content">
+    <h2 class="section-title">Today's Deals</h2>
+    <div class="product-grid">
+        {% for product in page_obj %}
+            <div class="product-card">
+                {% if product.discount_percent %}
+                    <span class="discount-badge">{{ product.discount_percent|floatformat:0 }}% off</span>
+                {% endif %}
+                <a href="{% url 'products:product_detail' product.slug %}" class="product-image-link">
+                    {% if product.image %}
+                        <img src="{{ product.image }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" alt="Placeholder" class="product-image">
+                    {% endif %}
+                </a>
+                <div class="product-info">
+                    <a href="{% url 'products:product_detail' product.slug %}" class="product-title">{{ product.name }}</a>
+                    <div class="product-rating">
+                        <span class="stars" style="--rating: {{ product.rating }};"></span>
+                        <span class="rating-count">({{ product.num_reviews }})</span>
+                    </div>
+                    <div class="product-price-box">
+                        <span class="price">₹{{ product.discount_price|default:product.price }}</span>
+                        {% if product.discount_price %}
+                            <span class="original-price">₹{{ product.price }}</span>
+                        {% endif %}
+                    </div>
+                    {% if product.stock_quantity > 0 %}
+                        <button class="btn btn-primary btn-block add-to-cart-btn" data-product-id="{{ product.id }}">Add to Cart</button>
+                    {% else %}
+                        <button class="btn btn-secondary btn-block" disabled>Out of Stock</button>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No deals available right now. Check back later!</p>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="pagination" style="margin-top:30px; text-align:center;">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary">&laquo; Prev</a>
+        {% endif %}
+        
+        <span style="padding: 0 15px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary">Next &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

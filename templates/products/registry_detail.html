@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ registry.name }} | ShopHub{% endblock %}
+{% block content %}
+<div class="main-content">
+    <h2 class="section-title">{{ registry.name }} <span style="font-size:14px; font-weight:normal; color:var(--text-light);">({{ registry.event_type }})</span></h2>
+    <div class="cart-page" style="flex-direction: column;">
+        <div class="cart-main">
+            <h3>Registry Items</h3>
+            <hr>
+            {% for item in registry.items.all %}
+                <div class="cart-item">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" alt="Placeholder">
+                    {% endif %}
+                    <div class="item-details">
+                        <h4><a href="{% url 'products:product_detail' item.product.slug %}">{{ item.product.name }}</a></h4>
+                        <div class="item-price">₹{{ item.product.discount_price|default:item.product.price }}</div>
+                        {% if item.product.stock_quantity > 0 %}
+                            <p class="stock">In Stock</p>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="{{ item.product.id }}" style="margin-top:10px;">Add to Cart</button>
+                        {% else %}
+                            <p class="stock" style="color:var(--error);">Out of Stock</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+            {% empty %}
+                <div class="empty-cart">
+                    <h2>This registry is empty.</h2>
+                    <p><a href="{% url 'products:product_list' %}" class="link-btn">Browse products</a> and click "Add to Registry".</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

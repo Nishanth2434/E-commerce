@@ -37,3 +37,48 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
+
+class SupportTicket(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Ticket from {self.name}"
+
+class Registry(models.Model):
+    EVENT_CHOICES = (
+        ('Wedding', 'Wedding'),
+        ('Birthday', 'Birthday'),
+        ('Baby', 'Baby'),
+        ('Other', 'Other'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='registries')
+    name = models.CharField(max_length=200)
+    event_type = models.CharField(max_length=50, choices=EVENT_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.event_type})"
+
+class RegistryItem(models.Model):
+    registry = models.ForeignKey(Registry, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('registry', 'product')
+
+    def __str__(self):
+        return f"{self.product.name} in {self.registry.name}"
+
+class SellerApplication(models.Model):
+    business_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    category = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Seller App: {self.business_name}"

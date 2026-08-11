@@ -59,6 +59,25 @@
                 
                 <button class="btn btn-primary add-to-cart-btn btn-block" data-product-id="{{ product.id }}" onclick="addToCartWithQuantity({{ product.id }})">Add to Cart</button>
             {% endif %}
+            
+            {% if user.is_authenticated %}
+                <hr style="margin:20px 0;">
+                <form action="{% url 'products:add_to_registry' product.id %}" method="POST">
+                    {% csrf_token %}
+                    <div style="display:flex; gap:10px;">
+                        <select name="registry_id" style="flex:1; padding:5px; border-radius:4px; border:1px solid #ccc;" required>
+                            <option value="" disabled selected>Select Registry...</option>
+                            {% for reg in user.registries.all %}
+                                <option value="{{ reg.id }}">{{ reg.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-secondary">Add to Registry</button>
+                    </div>
+                    <div style="text-align:right; margin-top:5px;">
+                        <a href="{% url 'products:registry' %}" class="link-btn" style="font-size:12px;">Create new registry</a>
+                    </div>
+                </form>
+            {% endif %}
         </div>
     </div>
     

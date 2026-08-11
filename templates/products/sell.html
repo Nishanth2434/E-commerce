@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Sell on ShopHub{% endblock %}
+{% block content %}
+<div class="main-content auth-page" style="max-width:800px; margin:0 auto; padding-top:40px;">
+    
+    <div style="text-align:center; margin-bottom:40px;">
+        <h2 style="font-size:36px; margin-bottom:15px;">Sell on ShopHub</h2>
+        <p style="font-size:18px; color:var(--text-light);">Reach millions of customers, grow your business, and get paid fast.</p>
+    </div>
+    
+    <div style="display:flex; gap:20px; margin-bottom:40px; flex-wrap:wrap; text-align:center;">
+        <div style="flex:1; min-width:200px; padding:20px; background:white; border:1px solid var(--border-color); border-radius:8px;">
+            <h3 style="color:var(--link-color); margin-bottom:10px;">Reach more customers</h3>
+            <p>List your products in front of the largest online shopping audience in India.</p>
+        </div>
+        <div style="flex:1; min-width:200px; padding:20px; background:white; border:1px solid var(--border-color); border-radius:8px;">
+            <h3 style="color:var(--link-color); margin-bottom:10px;">Easy listing tools</h3>
+            <p>Use our simple dashboard to add your inventory and manage your stock.</p>
+        </div>
+        <div style="flex:1; min-width:200px; padding:20px; background:white; border:1px solid var(--border-color); border-radius:8px;">
+            <h3 style="color:var(--link-color); margin-bottom:10px;">Fast payments</h3>
+            <p>Get paid directly into your bank account securely and on time, every week.</p>
+        </div>
+    </div>
+    
+    <div class="auth-box" style="margin:0 auto; max-width:500px;">
+        <h2>Start Selling Today</h2>
+        <br>
+        {% if success %}
+            <div class="alert" style="color:var(--success); background:#e7f4f1; padding:10px; border-radius:4px; margin-bottom:15px;">
+                Application submitted successfully! Our team will review it and contact you within 48 hours.
+            </div>
+        {% else %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Business Name</label>
+                    <input type="text" name="business_name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Primary Category</label>
+                    <select name="category" style="width:100%; padding:8px; border:1px solid #a6a6a6; border-radius:3px;">
+                        <option value="Electronics">Electronics</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Home & Kitchen">Home & Kitchen</option>
+                        <option value="Beauty">Beauty</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;">Submit Application</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

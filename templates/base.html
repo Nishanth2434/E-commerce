@@ -52,12 +52,19 @@
         </div>
         <div class="header-bottom">
             <nav class="nav-links">
-                <a href="#" class="menu-btn"><svg viewBox="0 0 24 24" width="20" height="20" style="margin-right: 5px;"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg> All</a>
-                <a href="{% url 'products:home' %}">Today's Deals</a>
-                <a href="#">Customer Service</a>
-                <a href="#">Registry</a>
-                <a href="#">Gift Cards</a>
-                <a href="#">Sell</a>
+                <div class="dropdown">
+                    <a href="#" class="menu-btn"><svg viewBox="0 0 24 24" width="20" height="20" style="margin-right: 5px;"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg> All</a>
+                    <div class="dropdown-content">
+                        {% for category in categories|default:'' %}
+                            <a href="{% url 'products:product_list' %}?category={{ category.slug }}" style="color:var(--text-main);">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a href="{% url 'products:deals' %}">Today's Deals</a>
+                <a href="{% url 'products:customer_service' %}">Customer Service</a>
+                <a href="{% url 'products:registry' %}">Registry</a>
+                <a href="{% url 'products:gift_cards' %}">Gift Cards</a>
+                <a href="{% url 'products:sell' %}">Sell</a>
                 {% for category in categories|default:'' %}
                     <a href="{% url 'products:product_list' %}?category={{ category.slug }}">{{ category.name }}</a>
                 {% endfor %}

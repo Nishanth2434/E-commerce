@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gift Cards | ShopHub{% endblock %}
+{% block content %}
+<div class="main-content">
+    <h2 class="section-title">ShopHub Gift Cards</h2>
+    <p style="margin-bottom:20px;">Give the gift of choice with a ShopHub Gift Card, redeemable for millions of items storewide.</p>
+    
+    <div class="product-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        {% for card in gift_cards %}
+            <div class="product-card" style="text-align:center; padding:30px 15px;">
+                <div style="background:var(--accent-color); padding:30px; border-radius:8px; margin-bottom:15px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                    <h2 style="color:var(--text-main); font-size:28px;">₹{{ card.price|floatformat:0 }}</h2>
+                    <p style="font-weight:bold; margin-top:10px;">Gift Card</p>
+                </div>
+                <div class="product-info">
+                    <h3 style="font-size:16px; margin-bottom:15px;">{{ card.name }}</h3>
+                    <button class="btn btn-primary btn-block add-to-cart-btn" data-product-id="{{ card.id }}">Add to Cart</button>
+                </div>
+            </div>
+        {% empty %}
+            <p>Gift cards are currently unavailable.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
