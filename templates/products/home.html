@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-carousel">
+        {% for product in deals %}
+            <div class="carousel-slide {% if forloop.first %}active{% endif %}">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h2>Flashing Offer!</h2>
+                        <h3 class="hero-title">{{ product.name }}</h3>
+                        <p class="hero-price">
+                            {% if product.discount_price %}
+                                <span class="deal-price">₹{{ product.discount_price }}</span>
+                                <span class="old-price">₹{{ product.price }}</span>
+                            {% else %}
+                                <span class="deal-price">₹{{ product.price }}</span>
+                            {% endif %}
+                        </p>
+                        <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-primary">Shop Now</a>
+                    </div>
+                    <div class="hero-image">
+                        <img src="{{ product.image }}" alt="{{ product.name }}">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="home-section">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="category-row">
+        {% for category in categories %}
+            <a href="{% url 'products:product_list' %}?category={{ category.slug }}" class="category-card">
+                <img src="{{ category.image }}" alt="{{ category.name }}">
+                <h3>{{ category.name }}</h3>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="home-section">
+    <h2 class="section-title">Deals of the Day</h2>
+    <div class="product-grid">
+        {% for product in deals %}
+            {% include 'products/product_card.html' with product=product %}
+        {% endfor %}
+    </div>
+</section>
+
+<section class="home-section">
+    <h2 class="section-title">Featured Products</h2>
+    <div class="product-grid">
+        {% for product in products %}
+            {% include 'products/product_card.html' with product=product %}
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

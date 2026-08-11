@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="history-page">
+    <h2>Your Orders</h2>
+    <div class="orders-list">
+        {% for order in orders %}
+            <div class="order-card">
+                <div class="order-header">
+                    <div class="header-col">
+                        <span>ORDER PLACED</span>
+                        <span>{{ order.created_at|date:"d F Y" }}</span>
+                    </div>
+                    <div class="header-col">
+                        <span>TOTAL</span>
+                        <span>₹{{ order.total_amount }}</span>
+                    </div>
+                    <div class="header-col">
+                        <span>SHIP TO</span>
+                        <span>{{ order.full_name }}</span>
+                    </div>
+                    <div class="header-col right">
+                        <span>ORDER # {{ order.id }}</span>
+                        <span class="status {{ order.status|lower }}">{{ order.status }}</span>
+                    </div>
+                </div>
+                <div class="order-body">
+                    {% for item in order.items.all %}
+                        <div class="order-item">
+                            <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
+                            <div class="item-info">
+                                <a href="{% url 'products:product_detail' item.product.slug %}">{{ item.product.name }}</a>
+                                <p>Qty: {{ item.quantity }}</p>
+                                <p>Price: ₹{{ item.price_at_purchase }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <p>You have not placed any orders yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <a href="{% url 'products:home' %}" class="auth-logo">ShopHub</a>
+        <div class="auth-box">
+            <h2>Sign in</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_username">Email or mobile phone number</label>
+                    <input type="text" name="username" id="id_username" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password" required>
+                </div>
+                {% if form.errors %}
+                    <p class="error-msg">Your username and password didn't match. Please try again.</p>
+                {% endif %}
+                <button type="submit" class="btn btn-primary btn-block">Continue</button>
+            </form>
+            <p class="terms">By continuing, you agree to ShopHub's Conditions of Use and Privacy Notice.</p>
+        </div>
+        <div class="auth-divider">
+            <h5>New to ShopHub?</h5>
+        </div>
+        <a href="{% url 'accounts:register' %}" class="btn btn-block btn-secondary">Create your ShopHub account</a>
+    </div>
+</div>
+{% endblock %}

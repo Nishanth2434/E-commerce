@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <a href="{% url 'products:home' %}" class="auth-logo">ShopHub</a>
+        <div class="auth-box">
+            <h2>Create account</h2>
+            {% if error %}
+                <div class="alert error">{{ error }}</div>
+            {% endif %}
+            <form method="post" id="register-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="full_name">Your name</label>
+                    <input type="text" name="full_name" id="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required placeholder="At least 6 characters">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Password again</label>
+                    <input type="password" name="confirm_password" id="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Continue</button>
+            </form>
+            <p class="terms">By creating an account, you agree to ShopHub's Conditions of Use and Privacy Notice.</p>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

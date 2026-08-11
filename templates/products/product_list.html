@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="search-results-page">
+    <aside class="filters-sidebar">
+        <h3>Filters</h3>
+        <div class="filter-group">
+            <h4>Categories</h4>
+            <ul>
+                {% for cat in categories %}
+                    <li>
+                        <a href="?category={{ cat.slug }}{% if query %}&q={{ query }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" 
+                           class="{% if category_slug == cat.slug %}active{% endif %}">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </aside>
+
+    <div class="results-main">
+        <div class="results-header">
+            <h2>
+                {% if query %}
+                    Results for "{{ query }}"
+                {% elif category_slug %}
+                    Products in Category
+                {% else %}
+                    All Products
+                {% endif %}
+            </h2>
+            <div class="sort-by">
+                <form method="get" id="sort-form">
+                    {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+                    {% if category_slug %}<input type="hidden" name="category" value="{{ category_slug }}">{% endif %}
+                    <select name="sort" onchange="document.getElementById('sort-form').submit()">
+                        <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>Newest Arrivals</option>
+                        <option value="price" {% if sort == 'price' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="-price" {% if sort == '-price' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="-rating" {% if sort == '-rating' %}selected{% endif %}>Avg. Customer Review</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <div class="product-grid">
+            {% for product in products %}
+                {% include 'products/product_card.html' with product=product %}
+            {% empty %}
+                <p>No products found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

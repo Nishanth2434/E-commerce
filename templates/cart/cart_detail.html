@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="cart-page">
+    <div class="cart-main">
+        <h2>Shopping Cart</h2>
+        <hr>
+        {% if cart.items.all %}
+            <div class="cart-items">
+                {% for item in cart.items.all %}
+                    <div class="cart-item" data-item-id="{{ item.id }}">
+                        <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
+                        <div class="item-details">
+                            <a href="{% url 'products:product_detail' item.product.slug %}"><h4>{{ item.product.name }}</h4></a>
+                            <p class="stock">In Stock</p>
+                            
+                            <div class="item-actions">
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" onclick="updateCart({{ item.id }}, 'decrease')">-</button>
+                                    <span class="qty-val" id="qty-{{ item.id }}">{{ item.quantity }}</span>
+                                    <button class="qty-btn" onclick="updateCart({{ item.id }}, 'increase')">+</button>
+                                </div>
+                                <span class="separator">|</span>
+                                <button class="link-btn" onclick="removeFromCart({{ item.id }})">Delete</button>
+                            </div>
+                        </div>
+                        <div class="item-price">
+                            <span id="subtotal-{{ item.id }}">₹{{ item.total_price }}</span>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+            <div class="cart-subtotal-bottom">
+                Subtotal (<span id="cart-count-bottom">{{ cart.items.count }}</span> items): <strong id="cart-total-bottom">₹{{ cart.items.all|length }}</strong>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <p>Your ShopHub Cart is empty.</p>
+                <a href="{% url 'products:home' %}" class="btn">Shop today's deals</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if cart.items.all %}
+        <div class="cart-sidebar">
+            <div class="checkout-box">
+                <p class="subtotal">
+                    Subtotal (<span id="cart-count-sidebar">{{ cart.items.count }}</span> items): 
+                    <strong id="cart-total-sidebar">₹...</strong>
+                </p>
+                <a href="{% url 'orders:checkout' %}" class="btn btn-primary btn-block">Proceed to Buy</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

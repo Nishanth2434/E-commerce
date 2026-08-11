@@ -1,0 +1,24 @@
+<div class="product-card">
+    <a href="{% url 'products:product_detail' product.slug %}" class="product-image-link">
+        <img src="{{ product.image }}" alt="{{ product.name }}" class="product-image">
+        {% if product.discount_price %}
+            <span class="discount-badge">Sale</span>
+        {% endif %}
+    </a>
+    <div class="product-info">
+        <a href="{% url 'products:product_detail' product.slug %}" class="product-title" title="{{ product.name }}">{{ product.name|truncatechars:50 }}</a>
+        <div class="product-rating">
+            <span class="stars" style="--rating: {{ product.rating|stringformat:'.1f' }};"></span>
+            <span class="reviews-count">({{ product.num_reviews }})</span>
+        </div>
+        <div class="product-price-box">
+            {% if product.discount_price %}
+                <span class="price">₹{{ product.discount_price }}</span>
+                <span class="original-price">₹{{ product.price }}</span>
+            {% else %}
+                <span class="price">₹{{ product.price }}</span>
+            {% endif %}
+        </div>
+        <button class="btn btn-primary add-to-cart-btn" data-product-id="{{ product.id }}">Add to Cart</button>
+    </div>
+</div>

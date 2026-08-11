@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="product-detail-page">
+    <div class="product-main">
+        <div class="product-gallery">
+            <img src="{{ product.image }}" alt="{{ product.name }}" id="main-image">
+        </div>
+        
+        <div class="product-details">
+            <h1>{{ product.name }}</h1>
+            <div class="product-rating">
+                <span class="stars" style="--rating: {{ product.rating|stringformat:'.1f' }};"></span>
+                <span>{{ product.rating }} out of 5</span>
+                <span class="reviews-link">({{ product.num_reviews }} reviews)</span>
+            </div>
+            
+            <hr>
+            
+            <div class="product-price-section">
+                {% if product.discount_price %}
+                    <span class="discount-badge">-{% widthratio product.price|add:"-product.discount_price" product.price 100 %}%</span>
+                    <span class="current-price">₹{{ product.discount_price }}</span>
+                    <p class="mrp">M.R.P.: <del>₹{{ product.price }}</del></p>
+                {% else %}
+                    <span class="current-price">₹{{ product.price }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="product-description">
+                <h4>About this item</h4>
+                <p>{{ product.description }}</p>
+            </div>
+        </div>
+        
+        <div class="product-action-box">
+            <div class="price-action">₹{{ product.discount_price|default:product.price }}</div>
+            
+            <div class="stock-status">
+                {% if product.stock_quantity > 0 %}
+                    <span class="in-stock">In Stock</span>
+                    {% if product.stock_quantity < 10 %}
+                        <p class="low-stock">Only {{ product.stock_quantity }} left in stock - order soon.</p>
+                    {% endif %}
+                {% else %}
+                    <span class="out-of-stock">Out of Stock</span>
+                {% endif %}
+            </div>
+            
+            {% if product.stock_quantity > 0 %}
+                <div class="quantity-selector">
+                    <label for="quantity">Quantity:</label>
+                    <select id="quantity" name="quantity">
+                        {% for i in "123456789"|make_list %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary add-to-cart-btn btn-block" data-product-id="{{ product.id }}" onclick="addToCartWithQuantity({{ product.id }})">Add to Cart</button>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="related-products">
+        <h2>Products related to this item</h2>
+        <div class="product-grid">
+            {% for rel_product in related_products %}
+                {% include 'products/product_card.html' with product=rel_product %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function addToCartWithQuantity(productId) {
+        const quantity = document.getElementById('quantity').value;
+        const btn = document.querySelector(`.add-to-cart-btn[data-product-id="${productId}"]`);
+        
+        fetch('/cart/add/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById('cart-badge').textContent = data.cart_count;
+                showToast(data.message);
+            } else if (data.status === 'error' && data.message === 'Invalid request') {
+                window.location.href = '/accounts/login/';
+            } else {
+                showToast(data.message, 'error');
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+/* Amazon Style Admin Customization for ShopHub */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body, .main-header, .main-sidebar, .card, .btn {
+    font-family: 'Amazon Ember', 'Inter', sans-serif !important;
+}
+
+/* Amazon Brand Colors */
+:root {
+    --shophub-dark: #131921;
+    --shophub-dark-hover: #232f3e;
+    --shophub-accent: #ffd814;
+    --shophub-light-bg: #eaeded;
+}
+
+body {
+    background-color: var(--shophub-light-bg) !important;
+}
+
+/* Navbar */
+.navbar-dark {
+    background-color: var(--shophub-dark) !important;
+    border-bottom: 2px solid var(--shophub-accent) !important;
+}
+.navbar-dark .nav-link {
+    color: #ffffff !important;
+}
+
+/* Sidebar - Dark Navy Theme */
+.sidebar-dark-warning {
+    background-color: var(--shophub-dark-hover) !important;
+}
+.brand-link {
+    background-color: var(--shophub-dark) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #3a4b5f !important;
+}
+.sidebar-dark-warning .nav-sidebar .nav-link {
+    color: #ffffff !important;
+}
+.sidebar-dark-warning .nav-sidebar .nav-link.active {
+    background-color: var(--shophub-accent) !important;
+    color: #111 !important;
+    font-weight: 600;
+    border-radius: 6px;
+    box-shadow: none !important;
+}
+
+/* Cards & Layout */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #d5d9d9;
+}
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #d5d9d9;
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+    font-weight: 600;
+}
+
+/* Inputs & Form Elements */
+input[type="text"], input[type="password"], input[type="email"], select, textarea {
+    border-radius: 6px !important;
+    border: 1px solid #888C8C;
+    padding: 8px 12px;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #e77600 !important;
+    box-shadow: 0 0 3px rgba(228,121,17,.5) !important;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 5px rgba(15,17,17,.15);
+}
+.btn-warning {
+    background-color: var(--shophub-accent) !important;
+    border-color: #fcd200 !important;
+    color: #111 !important;
+}
+.btn-warning:hover {
+    background-color: #f7ca00 !important;
+}
+
+/* Table Enhancements */
+.table th {
+    font-weight: 600;
+    color: #0f1111;
+    background-color: #f8f9fa;
+    border-top: none;
+}
+.table td {
+    vertical-align: middle;
+}
