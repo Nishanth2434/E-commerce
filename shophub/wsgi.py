@@ -14,3 +14,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shophub.settings')
 
 application = get_wsgi_application()
+
+# Required by Vercel Serverless
+app = application
